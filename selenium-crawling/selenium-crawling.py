@@ -1,37 +1,47 @@
-# import ㅔㅌ스트
+# selenium이 제대로 설치되었는지 확인하는 테스트 코드 (주석 처리됨)
 # try:
 #     from selenium import webdriver
-#     print("✅ selenium 정상 설치됨")
+#     print("selenium 정상 설치됨")
 # except ImportError as e:
-#     print("❌ selenium import 실패:", e)
+#     print("selenium import 실패:", e)
 
-#셀레늄 웹드라이버
+# Selenium 웹드라이버 모듈 임포트
 from selenium import webdriver
 
-#웹드라이버 객체 생성시 수반될 서비스나 옵션
+# 크롬 웹드라이버 실행에 필요한 서비스 객체와 옵션 객체를 위한 모듈 임포트
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
-#선택자 및 키보드 입력
+# 요소 선택(By) 및 키보드 조작(Keys)을 위한 모듈 임포트
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-############################################
+# 웹드라이버 자동 설치 도우미 패키지 (webdriver-manager)
 from webdriver_manager.chrome import ChromeDriverManager
 
+# 대기 및 sleep 처리를 위한 time 모듈
 import time
 
+# ChromeDriverManager를 이용하여 크롬 드라이버를 자동 설치하고 Service 객체로 초기화
 customService = Service(ChromeDriverManager().install())
+
+# 크롬 브라우저의 실행 옵션을 담는 객체 생성 (필요시 headless 등 설정 가능)
 customOptions = Options()
 
+# 위에서 정의한 서비스와 옵션을 사용하여 Chrome 브라우저 실행
 browser = webdriver.Chrome(service=customService, options=customOptions)
 
-############################################
-
+# 접속할 웹 페이지 주소 설정 (네이버 메인 페이지)
 URL = 'https://www.naver.com'
 
+# 지정된 URL로 브라우저 접속
 browser.get(URL)
-# 로딩 대기를 위해 10초 wait
+
+# 웹 페이지 내 요소들이 로드될 때까지 최대 10초까지 대기 (암시적 대기)
 browser.implicitly_wait(10)
 
+# XPath를 이용해 로그인 버튼 클릭 (id="account" 영역 내 div > a 요소 선택)
+browser.find_element(By.XPATH, '//*[@id="account"]/div/a').click()
+
+# 동작 확인을 위해 3초 대기 (명시적 대기: 실제 테스트 시 필요에 따라 조정)
 time.sleep(3)
