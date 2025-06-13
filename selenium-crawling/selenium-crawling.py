@@ -15,7 +15,8 @@ from selenium.webdriver.chrome.options import Options
 # 요소 선택(By) 및 키보드 조작(Keys)을 위한 모듈 임포트
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 # 웹드라이버 자동 설치 도우미 패키지 (webdriver-manager)
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -30,6 +31,8 @@ customOptions = Options()
 
 # 위에서 정의한 서비스와 옵션을 사용하여 Chrome 브라우저 실행
 browser = webdriver.Chrome(service=customService, options=customOptions)
+# 명시적 대기 객체 설정
+wait = WebDriverWait(browser, 10)
 
 # 접속할 웹 페이지 주소 설정 (네이버 메인 페이지)
 URL = 'https://www.naver.com'
@@ -38,7 +41,7 @@ URL = 'https://www.naver.com'
 browser.get(URL)
 
 # 웹 페이지 내 요소들이 로드될 때까지 최대 10초까지 대기 (암시적 대기)
-browser.implicitly_wait(10)
+browser.implicitly_wait(5)
 
 #######################################################
 # 네이버 메인 화면 메일 xPath 설정 후, 메일 text 값 획득
@@ -46,16 +49,52 @@ temp = browser.find_element(By.XPATH, '//*[@id="shortcutArea"]/ul/li[1]/a/span[2
 print(temp)
 
 # 검색창 xpath 설정 후, '크롤링' 이라는 텍스트 입력
-browser.find_element(By.XPATH, '//*[@id="query"]').send_keys('크롤링')
-time.sleep(3)
+browser.find_element(By.XPATH, '//*[@id="query"]').send_keys('박재형 바보')
+time.sleep(2)
 
 # 검색창의 검색 버튼 xpath 설정 후, 클릭 버튼
 browser.find_element(By.XPATH, '//*[@id="sform"]/fieldset/button').click()
-time.sleep(3)
+time.sleep(2)
 
-# 로그인 버튼
-# #버튼 클릭
-# browser.find_element(By.XPATH, '//*[@id="account"]/div/a').click()
+browser.find_element(By.XPATH, '//*[@id="header_wrap"]/div/div[1]/div[1]/div/h1/a').click()
+time.sleep(2)
 
-# 동작 확인을 위해 3초 대기 (명시적 대기: 실제 테스트 시 필요에 따라 조정)
+# 검색창에 검색어 입력 및 검색
+try:
+    search_input = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="query"]')))
+    search_input.send_keys('증시 주식 급상승 종목 데이터 가져오기')
+    time.sleep(3)
+
+    search_button = browser.find_element(By.XPATH, '//*[@id="right-content-area"]/div/div[5]/div/div[2]/div[2]/ul/li[1]/a')
+    search_button.click()
+    time.sleep(3)
+except Exception as e:
+    print("검색 중 오류 발생:", e)
+
+
+# 주식 데이터 수집
+try:
+    print("주식 데이터 수집 시작!")
+
+    tmpTitle = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="middle"]/div[1]/div[1]/h2/a'))).text
+    tmp1 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[1]/td[1]/span').text
+    tmp2 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[1]/td[1]/em/span[1]').text
+    tmp3 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[2]/td[1]/span').text
+    tmp4 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[2]/td[1]/em/span[1]').text
+    tmp5 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[1]/td[3]/span').text
+    tmp6 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[1]/td[3]/em/span[1]').text
+    tmp7 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[2]/td[3]/span[1]').text
+    tmp8 = browser.find_element(By.XPATH, '//*[@id="rate_info_nxt"]/table/tbody/tr[2]/td[3]/em/span[1]').text
+
+    print("✅ 현재 수집한 주식 정보:")
+    print("제목:", tmpTitle)
+    print("현재가:", tmp1, tmp2)
+    print("전일가:", tmp3, tmp4)
+    print("고가:", tmp5, tmp6)
+    print("저가:", tmp7, tmp8)
+
+except Exception as e:
+    print("❌ 주식 데이터 수집 중 오류:", e)
+
 time.sleep(3)
+browser.quit()
