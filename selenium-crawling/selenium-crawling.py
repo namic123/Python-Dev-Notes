@@ -71,6 +71,9 @@ try:
 except Exception as e:
     print("검색 중 오류 발생:", e)
 
+# 새 탭 전환이 필요한 경우 처리
+if len(browser.window_handles) > 1:
+    browser.switch_to.window(browser.window_handles[-1])
 
 # 주식 데이터 수집
 try:
