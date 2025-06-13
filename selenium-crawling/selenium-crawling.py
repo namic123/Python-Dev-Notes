@@ -40,8 +40,22 @@ browser.get(URL)
 # 웹 페이지 내 요소들이 로드될 때까지 최대 10초까지 대기 (암시적 대기)
 browser.implicitly_wait(10)
 
-# XPath를 이용해 로그인 버튼 클릭 (id="account" 영역 내 div > a 요소 선택)
-browser.find_element(By.XPATH, '//*[@id="account"]/div/a').click()
+#######################################################
+# 네이버 메인 화면 메일 xPath 설정 후, 메일 text 값 획득
+temp = browser.find_element(By.XPATH, '//*[@id="shortcutArea"]/ul/li[1]/a/span[2]').text
+print(temp)
+
+# 검색창 xpath 설정 후, '크롤링' 이라는 텍스트 입력
+browser.find_element(By.XPATH, '//*[@id="query"]').send_keys('크롤링')
+time.sleep(3)
+
+# 검색창의 검색 버튼 xpath 설정 후, 클릭 버튼
+browser.find_element(By.XPATH, '//*[@id="sform"]/fieldset/button').click()
+time.sleep(3)
+
+# 로그인 버튼
+# #버튼 클릭
+# browser.find_element(By.XPATH, '//*[@id="account"]/div/a').click()
 
 # 동작 확인을 위해 3초 대기 (명시적 대기: 실제 테스트 시 필요에 따라 조정)
 time.sleep(3)
