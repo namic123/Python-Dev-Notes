@@ -74,7 +74,6 @@ except Exception as e:
 # 새 탭 전환이 필요한 경우 처리
 if len(browser.window_handles) > 1:
     browser.switch_to.window(browser.window_handles[-1])
-
 # 주식 데이터 수집
 try:
     print("주식 데이터 수집 시작!")
