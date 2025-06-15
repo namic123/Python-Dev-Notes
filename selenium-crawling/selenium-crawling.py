@@ -5,23 +5,20 @@
 # except ImportError as e:
 #     print("selenium import 실패:", e)
 
-# Selenium 웹드라이버 모듈 임포트
-from selenium import webdriver
-
-# 크롬 웹드라이버 실행에 필요한 서비스 객체와 옵션 객체를 위한 모듈 임포트
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-
-# 요소 선택(By) 및 키보드 조작(Keys)을 위한 모듈 임포트
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-# 웹드라이버 자동 설치 도우미 패키지 (webdriver-manager)
-from webdriver_manager.chrome import ChromeDriverManager
-
 # 대기 및 sleep 처리를 위한 time 모듈
 import time
+
+# Selenium 웹드라이버 모듈 임포트
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+# 크롬 웹드라이버 실행에 필요한 서비스 객체와 옵션 객체를 위한 모듈 임포트
+from selenium.webdriver.chrome.service import Service
+# 요소 선택(By) 및 키보드 조작(Keys)을 위한 모듈 임포트
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+# 웹드라이버 자동 설치 도우미 패키지 (webdriver-manager)
+from webdriver_manager.chrome import ChromeDriverManager
 
 # ChromeDriverManager를 이용하여 크롬 드라이버를 자동 설치하고 Service 객체로 초기화
 customService = Service(ChromeDriverManager().install())
